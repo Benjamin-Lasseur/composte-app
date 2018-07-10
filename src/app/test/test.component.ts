@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import GetSheetDone from 'get-sheet-done';
+import { ItemsService } from '../shared/service/items.service';
+import { Observable } from 'rxjs';
+import { Item } from '../shared/domain/item';
+
 
 @Component({
   selector: 'app-test',
@@ -8,12 +11,13 @@ import GetSheetDone from 'get-sheet-done';
 })
 export class TestComponent implements OnInit {
 
-  constructor() { }
-
+  itemsObservable:Observable<Item[]>;
+  itemsList:Item[]
+  constructor(public itemsService:ItemsService) { }
+ 
   ngOnInit() {
-    GetSheetDone.raw("1KEaV8IHtB5bHDoiQ3-FbTocALJc7nBRKrrf4pBHzlco").then(sheet => {
-      console.log(sheet);
-  });
+  this.itemsObservable = this.itemsService.listerItems()
+  this.itemsObservable.subscribe(items => this.itemsList = items)
   }
 
 }
